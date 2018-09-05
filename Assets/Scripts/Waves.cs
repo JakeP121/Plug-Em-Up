@@ -1,25 +1,43 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Waves : MonoBehaviour {
-
-    private float waterLevel = 0.0f;
-
-    private GameObject[] waves;
-
-    public void Start()
+namespace PlugEmUp
+{
+    public class Waves : MonoBehaviour
     {
-        waves = new GameObject[transform.childCount];
+        private GameObject[] waves; // Individual wave objects
 
-        for (int i = 0; i < waves.Length; i++)
-            waves[i] = transform.GetChild(i).gameObject;
-    }
+        public void Start()
+        {
+            waves = new GameObject[transform.childCount];
 
-    public void increaseWater(float increase)
-    {
-        waterLevel += increase;
+            for (int i = 0; i < waves.Length; i++)
+                waves[i] = transform.GetChild(i).gameObject;
+        }
 
-        transform.position = new Vector3(transform.position.x, transform.position.y + (increase / 100), transform.position.z);
+        private void Update()
+        {
+            checkIfGameOver();
+        }
+
+        /// <summary>
+        /// Check if the water level has covered the screen and game is over
+        /// </summary>
+        private void checkIfGameOver()
+        {
+            if (transform.position.y >= 0)
+                FindObjectOfType<Game>().endGame();
+        }
+
+        /// <summary>
+        /// Increases the water by a value
+        /// </summary>
+        /// <param name="increase">The value to increase by.</param>
+        public void increaseWater(float increase)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y + (increase / 100), transform.position.z);
+        }
     }
 }

@@ -2,91 +2,98 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Game : MonoBehaviour {
+namespace PlugEmUp
+{
+    public class Game : MonoBehaviour
+    {
+        private KeyboardGrid grid; // Game screen split into keyboard-based grid
+        private Waves waves; // Overall water level
 
-    private KeyboardGrid grid;
-    private Waves waves;
+        public float breakFrequency = 5.0f; // How frequently damage is inflicted
+        private float breakCounter = 0.0f; // How long since damage was last inflicted
 
-    private float breakFrequency = 5.0f;
-    private float counter = 0.0f;
+        public Finger[] fingers; // Array of all fingers
 
-    public Finger[] fingers = new Finger[5];
-
-    // Use this for initialization
-    void Start () {
-        grid = GetComponent<KeyboardGrid>();
-
-        GameObject hand = GameObject.Find("Hand");
-
-        for (int i = 0; i < 5; i++)
-            fingers[i] = hand.transform.GetChild(i).GetComponent<Finger>();
-
-        breakRandom();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        counter += Time.deltaTime;
-
-        if (counter >= breakFrequency)
+        // Use this for initialization
+        void Start()
         {
-            counter = 0.0f;
+            grid = GetComponent<KeyboardGrid>();
+
+            GameObject hand = GameObject.Find("Hand");
+
+
+            fingers = new Finger[hand.transform.childCount];
+            for (int i = 0; i < hand.transform.childCount; i++)
+                fingers[i] = hand.transform.GetChild(i).GetComponent<Finger>();
+
+
             breakRandom();
         }
-	}
 
-    /// <summary>
-    /// Breaks a random part of the hull
-    /// </summary>
-    private void breakRandom()
-    {
-        bool found = false;
-        int i = 0;
-
-        while (!found)
+        // Update is called once per frame
+        void Update()
         {
-            KeyboardKey[] row = grid.rows[Random.Range(0, 3)].keys;
-            KeyboardKey key = row[Random.Range(0, row.Length)];
+            breakCounter += Time.deltaTime;
 
-            if (!key.hasALeak)
+            if (breakCounter >= breakFrequency)
             {
-                found = true;
-
-                GameObject leak = Instantiate(Resources.Load("Leak")) as GameObject;
-                //leak.transform.parent = this.transform;
-                leak.GetComponent<Leak>().init(key);
-
-                key.hasALeak = true;
+                breakCounter = 0.0f;
+                breakRandom();
             }
-            else
-                i++;
-
-            if (i > 10)
-                return;
         }
-    }
 
-
-    /// <summary>
-    /// Finds and returns a free finger.
-    /// </summary>
-    /// <returns>A finger currently plugging no holes.</returns>
-    public Finger getFreeFinger()
-    {
-        foreach (Finger f in fingers)
+        /// <summary>
+        /// Breaks a random part of the hull
+        /// </summary>
+        private void breakRandom()
         {
-            if (!f.inUse)
-                return f;
+            bool found = false;
+            int i = 0;
+
+            while (!found)
+            {
+                KeyboardKey[] row = grid.rows[Random.Range(0, 3)].keys;
+                KeyboardKey key = row[Random.Range(0, row.Length)];
+
+                if (!key.hasALeak)
+                {
+                    found = true;
+
+                    GameObject leak = Instantiate(Resources.Load("Leak")) as GameObject;
+                    leak.GetComponent<Leak>().init(key);
+
+                    key.hasALeak = true;
+                }
+                else
+                    i++;
+
+                if (i > 10)
+                    return;
+            }
         }
 
-        return null;
-    }
 
-    /// <summary>
-    /// Ends the game and displays the score
-    /// </summary>
-    private void endGame()
-    {
-        throw new System.NotImplementedException();
+        /// <summary>
+        /// Finds and returns a free finger.
+        /// </summary>
+        /// <returns>A finger currently plugging no holes.</returns>
+        public Finger getFreeFinger()
+        {
+            foreach (Finger f in fingers)
+            {
+                if (!f.inUse)
+                    return f;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Ends the game and displays the score
+        /// </summary>
+        public void endGame()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -2,38 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mouse : MonoBehaviour {
-
-    public Texture2D hammer;
-    public Texture2D board;
-
-    public enum State { BOARDING, HAMMERING };
-    public State currentState;
-
-	// Use this for initialization
-	void Start () {
-        currentState = State.BOARDING;
-
-        Cursor.SetCursor(board, Vector3.zero, CursorMode.ForceSoftware);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    public void switchState()
+namespace PlugEmUp
+{
+    public class Mouse : MonoBehaviour
     {
-        switch (currentState)
+        // Cursor textures
+        public Texture2D hammer;
+        public Texture2D plank; 
+
+        public enum Tool { PLANK, HAMMER };
+        public Tool currentTool { get; private set; }
+
+        // Use this for initialization
+        void Start()
         {
-            case (State.BOARDING):
-                currentState = State.HAMMERING;
-                Cursor.SetCursor(hammer, Vector3.zero, CursorMode.ForceSoftware);
-                break;
-            case (State.HAMMERING):
-                currentState = State.BOARDING;
-                Cursor.SetCursor(board, Vector3.zero, CursorMode.ForceSoftware);
-                break;
+            switchTool(Tool.PLANK);
+        }
+
+        /// <summary>
+        /// Switches to a specified tool
+        /// </summary>
+        /// <param name="tool">The tool to switch to</param>
+        public void switchTool(Tool tool)
+        {
+            switch (tool)
+            {
+                case (Tool.HAMMER):
+                    currentTool = Tool.HAMMER;
+                    Cursor.SetCursor(hammer, new Vector2(51.5f, 51.5f), CursorMode.ForceSoftware);
+                    break;
+                case (Tool.PLANK):
+                    currentTool = Tool.PLANK;
+                    Cursor.SetCursor(plank, new Vector2(102.5f, 51.5f), CursorMode.ForceSoftware);
+                    break;
+            }
+
         }
     }
 }

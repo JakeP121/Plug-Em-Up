@@ -2,39 +2,55 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyboardRow {
-
-    public KeyboardKey[] keys;
-
-    public KeyboardRow(int keyCount)
+namespace PlugEmUp
+{
+    public class KeyboardRow
     {
-        this.keys = new KeyboardKey[keyCount];
-    }
+        public KeyboardKey[] keys; // Individual keys in this row
 
-    public KeyboardRow(Game game, params KeyCode[] keys)
-    {
-        this.keys = new KeyboardKey[keys.Length];
-
-        for (int i = 0; i < keys.Length; i++)
-            this.keys[i] = new KeyboardKey(keys[i]);
-    }
-
-
-    public void setPositions(Vector2 rowSize, Vector2 boxSize, float yPos)
-    {
-        float whitespace = rowSize.x - (boxSize.x * keys.Length );
-        whitespace /= keys.Length + 1;
-
-        for (int i = 0; i < keys.Length; i++)
+        /// <summary>
+        /// Creates a KeyboardRow
+        /// </summary>
+        /// <param name="keyCount">The amount of keys in this row.</param>
+        public KeyboardRow(int keyCount)
         {
-            keys[i].size = new Vector3(boxSize.x, boxSize.y, 1.2f);
+            this.keys = new KeyboardKey[keyCount];
+        }
 
-            float xPos = -(rowSize.x / 2) + (boxSize.x / 2) + (boxSize.x * i);
+        /// <summary>
+        /// Creates a KeyboardRow
+        /// </summary>
+        /// <param name="keys">KeyCodes for all keys in this row.</param>
+        public KeyboardRow(params KeyCode[] keys)
+        {
+            this.keys = new KeyboardKey[keys.Length];
 
-            if (whitespace > 0)
-                xPos += whitespace * i;
+            for (int i = 0; i < keys.Length; i++)
+                this.keys[i] = new KeyboardKey(keys[i]);
+        }
 
-            keys[i].position = new Vector3(xPos, yPos, -1.0f);
+        /// <summary>
+        /// Sets the size and positions of all keys in this row
+        /// </summary>
+        /// <param name="rowSize">Width and height of this row.</param>
+        /// <param name="keySize">The width and height of all keys in this row.</param>
+        /// <param name="yPos">The ycoordinate of all keys.</param>
+        public void setPositions(Vector2 rowSize, Vector2 keySize, float yPos)
+        {
+            float whitespace = rowSize.x - (keySize.x * keys.Length);
+            whitespace /= keys.Length + 1;
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                keys[i].size = new Vector3(keySize.x, keySize.y, 1.2f);
+
+                float xPos = -(rowSize.x / 2) + (keySize.x / 2) + (keySize.x * i);
+
+                if (whitespace > 0)
+                    xPos += whitespace * i;
+
+                keys[i].position = new Vector3(xPos, yPos, -1.0f);
+            }
         }
     }
 }
