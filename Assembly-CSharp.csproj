@@ -61,12 +61,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Board\AbstractState.cs" />
+    <Compile Include="Assets\Scripts\Board\Board.cs" />
+    <Compile Include="Assets\Scripts\Board\Building.cs" />
+    <Compile Include="Assets\Scripts\Board\Built.cs" />
+    <Compile Include="Assets\Scripts\Board\Falling.cs" />
     <Compile Include="Assets\Scripts\Finger.cs" />
     <Compile Include="Assets\Scripts\Game.cs" />
     <Compile Include="Assets\Scripts\KeyboardGrid.cs" />
     <Compile Include="Assets\Scripts\KeyboardKey.cs" />
     <Compile Include="Assets\Scripts\KeyboardRow.cs" />
     <Compile Include="Assets\Scripts\Leak.cs" />
+    <Compile Include="Assets\Scripts\Mouse.cs" />
     <Compile Include="Assets\Scripts\Plank.cs" />
     <Compile Include="Assets\Scripts\WaveController.cs" />
     <Compile Include="Assets\Scripts\Waves.cs" />

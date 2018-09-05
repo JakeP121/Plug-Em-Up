@@ -7,58 +7,33 @@ public class Game : MonoBehaviour {
     private KeyboardGrid grid;
     private Waves waves;
 
-    private float breakFrequency = 2.0f;
-    private float currentCounter = 0.0f;
-
-    public float pluggedFillSpeed = 0.5f;
-    public float leakingFillSpeed = 1.0f;
-    private float fillCounter = 0.0f;
+    private float breakFrequency = 5.0f;
+    private float counter = 0.0f;
 
     public Finger[] fingers = new Finger[5];
 
     // Use this for initialization
     void Start () {
         grid = GetComponent<KeyboardGrid>();
-        waves = FindObjectOfType<Waves>();
 
         GameObject hand = GameObject.Find("Hand");
 
         for (int i = 0; i < 5; i++)
             fingers[i] = hand.transform.GetChild(i).GetComponent<Finger>();
+
+        breakRandom();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        currentCounter += Time.deltaTime;
-        fillCounter += Time.deltaTime;
+        counter += Time.deltaTime;
 
-        if (currentCounter >= breakFrequency)
+        if (counter >= breakFrequency)
         {
-            currentCounter = 0.0f;
+            counter = 0.0f;
             breakRandom();
         }
-
-        if (fillCounter >= 0.5f)
-        {
-            updateWater();
-            fillCounter = 0.0f;
-        }
 	}
-
-    private void updateWater()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            foreach (KeyboardKey box in grid.rows[i].boxes)
-            {
-                if (box.currentState == KeyboardKey.State.PLUGGED)
-                    waves.increaseWater(pluggedFillSpeed);
-                else if (box.currentState == KeyboardKey.State.LEAKING)
-                    waves.increaseWater(leakingFillSpeed);
-                    
-            }
-        }
-    }
 
     /// <summary>
     /// Breaks a random part of the hull
@@ -70,17 +45,18 @@ public class Game : MonoBehaviour {
 
         while (!found)
         {
-            KeyboardKey[] boxes = grid.rows[Random.Range(0, 3)].boxes;
-            KeyboardKey box = boxes[Random.Range(0, boxes.Length)];
+            KeyboardKey[] row = grid.rows[Random.Range(0, 3)].keys;
+            KeyboardKey key = row[Random.Range(0, row.Length)];
 
-            if (box.currentState == KeyboardKey.State.HEALTHY)
+            if (!key.hasALeak)
             {
                 found = true;
 
                 GameObject leak = Instantiate(Resources.Load("Leak")) as GameObject;
-                leak.GetComponent<Leak>().init(box);
+                //leak.transform.parent = this.transform;
+                leak.GetComponent<Leak>().init(key);
 
-                box.breakWood(leak);
+                key.hasALeak = true;
             }
             else
                 i++;
@@ -90,6 +66,11 @@ public class Game : MonoBehaviour {
         }
     }
 
+
+    /// <summary>
+    /// Finds and returns a free finger.
+    /// </summary>
+    /// <returns>A finger currently plugging no holes.</returns>
     public Finger getFreeFinger()
     {
         foreach (Finger f in fingers)
@@ -101,8 +82,11 @@ public class Game : MonoBehaviour {
         return null;
     }
 
+    /// <summary>
+    /// Ends the game and displays the score
+    /// </summary>
     private void endGame()
     {
-
+        throw new System.NotImplementedException();
     }
 }

@@ -8,15 +8,11 @@ public class Finger : MonoBehaviour {
 
     public bool inUse = false;
 
+    private Game game;
     private GameObject target;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
 
         if (target == null) // No target, move back to starting position
         {
@@ -27,25 +23,32 @@ public class Finger : MonoBehaviour {
         }
         else
         {
-            //6.3
-            float distance = Mathf.Abs(target.transform.position.y - transform.localPosition.y);
+            // 6.3 - distance from tip of finger to origin
+            float distance = target.transform.position.y - (transform.position.y + 6.3f);
 
-            Debug.Log(distance);
-
-            if (distance < 6.3)
-            {
+            if (distance >= 0.5f)
                 transform.localPosition = new Vector3(target.transform.position.x, transform.localPosition.y + (Time.deltaTime * speed), transform.localPosition.z);
-            }
+            else if (target.GetComponent<Leak>().currentState != Leak.State.PLUGGED)
+                target.GetComponent<Leak>().plug();
         }
 	}
 
-    public void plugHole(GameObject hole)
+
+    /// <summary>
+    /// Starts moving this finger to a target hole
+    /// </summary>
+    /// <param name="hole">The target to move to.</param>
+    public void moveToPlugHole(GameObject hole)
     {
         target = hole;
         inUse = true;
     }
 
-    public void resetFinger()
+
+    /// <summary>
+    /// Starts to retract this finger back below the screen
+    /// </summary>
+    public void retract()
     {
         target = null;
     }

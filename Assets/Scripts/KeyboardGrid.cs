@@ -33,7 +33,7 @@ public class KeyboardGrid : MonoBehaviour {
         rows[2] = new KeyboardRow(game, KeyCode.Z, KeyCode.X, KeyCode.C, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M);
 
         Vector2 rowSize = new Vector2(playSize.x, playSize.y / 3);
-        Vector2 boxSize = new Vector2(playSize.x / rows[0].boxes.Length, playSize.y / 3);
+        Vector2 boxSize = new Vector2(playSize.x / rows[0].keys.Length, playSize.y / 3);
 
         for (int i = 0; i < rows.Length; i++)
         {
@@ -52,7 +52,7 @@ public class KeyboardGrid : MonoBehaviour {
 
         foreach (KeyboardRow row in rows)
         {
-            foreach (KeyboardKey box in row.boxes)
+            foreach (KeyboardKey box in row.keys)
                 Gizmos.DrawCube(box.position, box.size);
         }
     }
