@@ -36,7 +36,8 @@ namespace PlugEmUp
 
             transform.position = key.position;
 
-            game = FindObjectOfType<Game>();
+            game = GameObject.Find("Game").GetComponent<Game>();
+            Score.newLeak();
             waves = FindObjectOfType<Waves>();
 
             hole = transform.Find("Hole").gameObject;
@@ -175,6 +176,7 @@ namespace PlugEmUp
         public void fix()
         {
             key.hasALeak = false;
+            Score.repairedLeak();
             Destroy(this.gameObject);
         }
 

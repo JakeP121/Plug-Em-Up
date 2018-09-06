@@ -161,7 +161,6 @@ E:\Documents\Unity Projects\Plug Em Up\Temp\bin\Debug\UnityEngine.Networking.xml
 E:\Documents\Unity Projects\Plug Em Up\Temp\bin\Debug\UnityEngine.GoogleAudioSpatializer.xml
 E:\Documents\Unity Projects\Plug Em Up\Temp\bin\Debug\UnityEngine.HoloLens.xml
 E:\Documents\Unity Projects\Plug Em Up\Temp\bin\Debug\UnityEngine.SpatialTracking.xml
-E:\Documents\Unity Projects\Plug Em Up\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 E:\Documents\Unity Projects\Plug Em Up\obj\Debug\Assembly-CSharp.dll
 E:\Documents\Unity Projects\Plug Em Up\obj\Debug\Assembly-CSharp.pdb
 D:\Documents\Unity Projects\Plug-Em-Up\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
@@ -332,3 +331,6 @@ D:\Documents\Unity Projects\Plug-Em-Up\Temp\bin\Debug\UnityEngine.GoogleAudioSpa
 D:\Documents\Unity Projects\Plug-Em-Up\Temp\bin\Debug\UnityEngine.HoloLens.xml
 D:\Documents\Unity Projects\Plug-Em-Up\Temp\bin\Debug\UnityEngine.SpatialTracking.xml
 D:\Documents\Unity Projects\Plug-Em-Up\obj\Debug\Assembly-CSharp.csproj.CopyComplete
+E:\Documents\Unity Projects\Plug Em Up\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+E:\Documents\Unity Projects\Plug Em Up\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
+E:\Documents\Unity Projects\Plug Em Up\obj\Debug\Assembly-CSharp.csproj.CopyComplete

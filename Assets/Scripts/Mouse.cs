@@ -36,7 +36,11 @@ namespace PlugEmUp
                     Cursor.SetCursor(plank, new Vector2(102.5f, 51.5f), CursorMode.ForceSoftware);
                     break;
             }
+        }
 
+        public void reset()
+        {
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
     }
 }

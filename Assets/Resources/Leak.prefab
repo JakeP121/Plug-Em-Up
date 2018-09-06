@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 65590445442906010}
   m_Layer: 0
   m_Name: Leak
-  m_TagString: Untagged
+  m_TagString: Leak
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
+  plank: {fileID: 0}
 --- !u!198 &198900409164353526
 ParticleSystem:
   m_ObjectHideFlags: 1

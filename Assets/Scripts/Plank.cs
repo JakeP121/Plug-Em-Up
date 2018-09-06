@@ -18,7 +18,7 @@ namespace PlugEmUp
         public enum State { BUILDING, BUILT, FALLING };
         public State currentState;
 
-        private KeyboardKey key;
+        private KeyboardKey key; // Keyboard location of this plank
 
         /// <summary>
         /// Initialises the plank

@@ -28,7 +28,7 @@ namespace PlugEmUp
         private void checkIfGameOver()
         {
             if (transform.position.y >= 0)
-                FindObjectOfType<Game>().endGame();
+                GameObject.Find("Game").GetComponent<Game>().endGame();
         }
 
         /// <summary>

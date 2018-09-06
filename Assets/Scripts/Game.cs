@@ -9,10 +9,14 @@ namespace PlugEmUp
         private KeyboardGrid grid; // Game screen split into keyboard-based grid
         private Waves waves; // Overall water level
 
-        public float breakFrequency = 5.0f; // How frequently damage is inflicted
+        public float breakFrequency = 1.0f; // How frequently damage is inflicted
         private float breakCounter = 0.0f; // How long since damage was last inflicted
 
         public Finger[] fingers; // Array of all fingers
+
+        private bool running = false; // Is the game running
+
+        private float gameTimer = 0.0f;
 
         // Use this for initialization
         void Start()
@@ -21,10 +25,11 @@ namespace PlugEmUp
 
             GameObject hand = GameObject.Find("Hand");
 
-
             fingers = new Finger[hand.transform.childCount];
             for (int i = 0; i < hand.transform.childCount; i++)
                 fingers[i] = hand.transform.GetChild(i).GetComponent<Finger>();
+
+            running = true;
 
 
             breakRandom();
@@ -33,6 +38,11 @@ namespace PlugEmUp
         // Update is called once per frame
         void Update()
         {
+            if (!running)
+                return;
+
+            gameTimer += Time.deltaTime;
+
             breakCounter += Time.deltaTime;
 
             if (breakCounter >= breakFrequency)
@@ -93,7 +103,32 @@ namespace PlugEmUp
         /// </summary>
         public void endGame()
         {
-            throw new System.NotImplementedException();
+            if (!running)
+                return;
+
+            running = false;
+
+            Score.setTimeSurvived(gameTimer);
+
+            closeAllLeaks();
+            GetComponent<Mouse>().reset();
+
+            GameObject.Find("End Screen").GetComponent<EndScreen>().rise();
+        }
+
+        /// <summary>
+        /// Destroys all leaks
+        /// </summary>
+        private void closeAllLeaks()
+        {
+            GameObject[] leaks = GameObject.FindGameObjectsWithTag("Leak");
+
+            foreach (GameObject leak in leaks)
+            {
+                for (int i = 0; i < leak.transform.childCount; i++)
+                    Destroy(leak.transform.GetChild(i).gameObject);
+                Destroy(leak);
+            }
         }
     }
 }
