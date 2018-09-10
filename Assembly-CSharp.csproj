@@ -62,19 +62,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\ScoreBoard.cs" />
-    <Compile Include="Assets\Scripts\EndScreen.cs" />
+    <Compile Include="Assets\Scripts\Data Types\Tuple.cs" />
     <Compile Include="Assets\Scripts\Finger.cs" />
     <Compile Include="Assets\Scripts\Game.cs" />
-    <Compile Include="Assets\Scripts\KeyboardGrid.cs" />
-    <Compile Include="Assets\Scripts\KeyboardKey.cs" />
-    <Compile Include="Assets\Scripts\KeyboardRow.cs" />
+    <Compile Include="Assets\Scripts\Keyboard Grid\KeyboardGrid.cs" />
+    <Compile Include="Assets\Scripts\Keyboard Grid\KeyboardKey.cs" />
+    <Compile Include="Assets\Scripts\Keyboard Grid\KeyboardRow.cs" />
     <Compile Include="Assets\Scripts\Leak.cs" />
     <Compile Include="Assets\Scripts\Mouse.cs" />
     <Compile Include="Assets\Scripts\Plank.cs" />
-    <Compile Include="Assets\Scripts\PlankUIRing.cs" />
+    <Compile Include="Assets\Scripts\PulsingUI.cs" />
     <Compile Include="Assets\Scripts\Score.cs" />
-    <Compile Include="Assets\Scripts\WaveController.cs" />
-    <Compile Include="Assets\Scripts\Waves.cs" />
+    <Compile Include="Assets\Scripts\Start and End Scenes\EndScreen.cs" />
+    <Compile Include="Assets\Scripts\Start and End Scenes\Instructions.cs" />
+    <Compile Include="Assets\Scripts\Waves\WaveController.cs" />
+    <Compile Include="Assets\Scripts\Waves\Waves.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>E:/Documents/Unity Projects/Plug Em Up/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

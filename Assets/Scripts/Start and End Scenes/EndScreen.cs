@@ -7,11 +7,6 @@ public class EndScreen : MonoBehaviour {
     public float riseSpeed = 5.0f; // How fast the screen rises
     private bool rising = false; // If the screen is currently rising
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
 	// Update is called once per frame
 	void Update () {
         if (rising)

@@ -42,18 +42,11 @@ namespace PlugEmUp
         public static int getCurrentScore()
         {
             int score = ((int)timeSurvived * 100) + (leaksStarted * 5) + (leaksRepaired * 10);
+
+            if (score >= PlayerPrefs.GetInt("High score", 0))
+                PlayerPrefs.SetInt("High score", score);
+
             return score;
-        }
-
-        /// <summary>
-        /// Saves the score if it is a highscore
-        /// </summary>
-        public static void saveIfHighscore()
-        {
-            int currentScore = getCurrentScore();
-
-            if (currentScore >= PlayerPrefs.GetInt("Highscore", 0))
-                PlayerPrefs.SetInt("Highscore", currentScore);
         }
 
         /// <summary>

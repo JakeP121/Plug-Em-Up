@@ -12,13 +12,21 @@ namespace PlugEmUp
         public float timeToBuild = 5.0f; // The maximum time the plank has to be fully built before falling off
         private float buildTimeCounter = 0.0f; // Counter to keep track of current build time
 
-        public int clicksToBuild = 5; // How many clicks it takes to fully build the plank
+        private int clicksToBuild; // How many clicks it takes to fully build the plank
         private int clickCounter = 0; // Counter to keep track of how many clicks have been performed
 
         public enum State { BUILDING, BUILT, FALLING };
         public State currentState;
 
         private KeyboardKey key; // Keyboard location of this plank
+
+        private PulsingUI ring; // The pulsing UI ring
+
+        private Mouse mouse; // The mouse used to build this plank
+
+        public AudioClip[] hammerSounds;
+        public AudioClip[] placementSound;
+        private AudioSource audioSource;
 
         /// <summary>
         /// Initialises the plank
@@ -28,9 +36,18 @@ namespace PlugEmUp
         {
             currentState = State.BUILDING;
 
+            mouse = FindObjectOfType<Mouse>();
+            mouse.switchTool(Mouse.Tool.HAMMER);
+
             transform.parent = parent;
             transform.localPosition = new Vector3(0.0f, 0.0f, -21.0f);
             key = transform.parent.GetComponent<Leak>().key;
+
+            ring = transform.Find("Ring").gameObject.GetComponent<PulsingUI>();
+
+            clicksToBuild = Random.Range(1, 8);
+            audioSource = GetComponent<AudioSource>();
+            playSoundFrom(placementSound);
         }
 
         public void Update()
@@ -49,6 +66,7 @@ namespace PlugEmUp
                     if (buildTimeCounter >= timeToBuild)
                     {
                         startFalling();
+                        mouse.switchTool(Mouse.Tool.PLANK);
                         transform.parent.GetComponent<Leak>().currentState = Leak.State.LEAKING;
                     }
                     break;
@@ -73,12 +91,14 @@ namespace PlugEmUp
                 return;
 
             clickCounter++;
+            playSoundFrom(hammerSounds);
 
             if (clickCounter >= clicksToBuild) // Click counter satisfied, fully built
             {
                 currentState = State.BUILT;
+                ring.setActive(false);
 
-                FindObjectOfType<Mouse>().switchTool(Mouse.Tool.PLANK);
+                mouse.switchTool(Mouse.Tool.PLANK);
 
                 Leak leak = transform.parent.GetComponent<Leak>();
                 transform.parent = null;
@@ -92,10 +112,20 @@ namespace PlugEmUp
         public void startFalling()
         {
             currentState = State.FALLING;
-            FindObjectOfType<Mouse>().switchTool(Mouse.Tool.PLANK);
 
             if (transform.parent != null)
                 transform.parent.GetComponent<Leak>().plank = null;
+        }
+
+        /// <summary>
+        /// Picks a random sound to play from an array.
+        /// </summary>
+        /// <param name="sounds">An array of sounds</param>
+        private void playSoundFrom(AudioClip[] sounds)
+        {
+            AudioClip sound = sounds[Random.Range(0, sounds.Length)];
+            audioSource.clip = sound;
+            audioSource.Play();
         }
     }
 }

@@ -9,14 +9,16 @@ namespace PlugEmUp
         private KeyboardGrid grid; // Game screen split into keyboard-based grid
         private Waves waves; // Overall water level
 
-        public float breakFrequency = 1.0f; // How frequently damage is inflicted
-        private float breakCounter = 0.0f; // How long since damage was last inflicted
+        public float breakCounter = 0.0f; // How long since damage was last inflicted
+        private List<Tuple<float, float, float>> breakFrequency = new List<Tuple<float, float, float>>(); // The length of each stage (seconds), the frequency of leaks (seconds) and probability of a double event (0-1)
+        public int stage = 0; // What stage of breakFrequency the game is currently in
+        private float stageTimer = 0.0f; // How long the current stage has been active
 
         public Finger[] fingers; // Array of all fingers
 
         private bool running = false; // Is the game running
 
-        private float gameTimer = 0.0f;
+        public float gameTimer = 0.0f;
 
         // Use this for initialization
         void Start()
@@ -29,10 +31,24 @@ namespace PlugEmUp
             for (int i = 0; i < hand.transform.childCount; i++)
                 fingers[i] = hand.transform.GetChild(i).GetComponent<Finger>();
 
+            initBreakFrequencies();
+
             running = true;
+        }
 
+        private void initBreakFrequencies()
+        {
+            breakFrequency.Add(new Tuple<float, float, float>(15.0f, 4.0f, 0.0f));
+            breakFrequency.Add(new Tuple<float, float, float>(16.0f, 4.0f, 0.3f));
+            breakFrequency.Add(new Tuple<float, float, float>(15.0f, 3.0f, 0.3f));
+            breakFrequency.Add(new Tuple<float, float, float>(15.0f, 3.0f, 0.4f));
+            breakFrequency.Add(new Tuple<float, float, float>(12.0f, 3.0f, 0.5f));
+            breakFrequency.Add(new Tuple<float, float, float>(12.0f, 2.5f, 0.5f));
+            breakFrequency.Add(new Tuple<float, float, float>(12.0f, 2.0f, 0.5f));
+            breakFrequency.Add(new Tuple<float, float, float>(12.0f, 2.0f, 0.7f));
+            breakFrequency.Add(new Tuple<float, float, float>(Mathf.Infinity, 1.5f, 0.9f));
 
-            breakRandom();
+            stage = 0;
         }
 
         // Update is called once per frame
@@ -42,13 +58,27 @@ namespace PlugEmUp
                 return;
 
             gameTimer += Time.deltaTime;
+            stageTimer += Time.deltaTime;
+
+            if (stageTimer >= breakFrequency[stage + 1].key1 && stage < breakFrequency.Count -2) // Advance stage if time elapsed
+            {
+                stageTimer = 0.0f;
+                stage++;
+            }
 
             breakCounter += Time.deltaTime;
 
-            if (breakCounter >= breakFrequency)
+            if (breakCounter >= breakFrequency[stage].key2) // Make a leak
             {
                 breakCounter = 0.0f;
+
                 breakRandom();
+
+                // Test if there should be a double event?
+                float doubleEvent = Random.Range(0.0f, 1.0f);
+
+                if (doubleEvent <= breakFrequency[stage].key3)
+                    breakRandom();
             }
         }
 
