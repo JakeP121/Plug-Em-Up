@@ -18,11 +18,15 @@ namespace PlugEmUp
 
         public GameObject plank; // Plank in use to fix (null if not being repaired)
 
+        private bool particlesOn = false; // Should water particles be shown
+
         private Game game; // Game script, keeps track of fingers
         private Waves waves; // Water to increase over time
 
         private float waterFillSpeed = 5.0f; // How many units should the water increase by every second
         private float waterFillCounter = 0.0f; // Counter to keep track of how long since water was increased by this leak
+
+        private Pause.Menu pauseMenu;
 
         /// <summary>
         /// Initialises the leak
@@ -36,7 +40,9 @@ namespace PlugEmUp
 
             transform.position = key.position;
 
-            game = GameObject.Find("Game").GetComponent<Game>();
+            game = FindObjectOfType<Game>();
+            pauseMenu = FindObjectOfType<Pause.Menu>();
+
             Score.newLeak();
             waves = FindObjectOfType<Waves>();
 
@@ -50,6 +56,15 @@ namespace PlugEmUp
         // Update is called once per frame
         void Update()
         {
+            if (pauseMenu.isPaused)
+            {
+                if (particlesOn)
+                    showParticles(false);
+                return;
+            }
+            else if (!particlesOn)
+                showParticles(true);
+
             handleInput();
 
             updateWater();
@@ -205,8 +220,14 @@ namespace PlugEmUp
         /// <param name="show">True to show, false to hide.</param>
         private void showParticles(bool show)
         {
+            particlesOn = show;
+
             ParticleSystem.EmissionModule psEmission = GetComponentInChildren<ParticleSystem>().emission;
-            psEmission.enabled = show;
+
+            if (particlesOn)
+                psEmission.rateOverTime = 40.0f;
+            else
+                psEmission.rateOverTime = 0.0f;
         }
     }
 }

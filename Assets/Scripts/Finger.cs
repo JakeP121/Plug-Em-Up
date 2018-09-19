@@ -12,9 +12,19 @@ namespace PlugEmUp
 
         private GameObject target; // Target plugged or going to be plugged (null if not inUse)
 
+        private Pause.Menu pauseMenu;
+
+        private void Start()
+        {
+            pauseMenu = FindObjectOfType<Pause.Menu>();
+        }
+
         // Update is called once per frame
         void Update()
         {
+            if (pauseMenu.isPaused)
+                return;
+
             if (target == null) // No target, move back to starting position
             {
                 if (transform.localPosition.y >= 0)

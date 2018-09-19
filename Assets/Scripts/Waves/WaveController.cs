@@ -10,9 +10,19 @@ namespace PlugEmUp
 
         private float counter = 0.0f; // Counter to keep track of time
 
+        private Pause.Menu pauseMenu;
+
+        private void Start()
+        {
+            pauseMenu = FindObjectOfType<Pause.Menu>();
+        }
+
         // Update is called once per frame
         void Update()
         {
+            if (pauseMenu.isPaused)
+                return;
+
             counter += Time.deltaTime;
 
             if (clockwise)

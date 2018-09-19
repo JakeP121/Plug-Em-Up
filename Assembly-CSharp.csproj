@@ -61,7 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ScoreBoard.cs" />
     <Compile Include="Assets\Scripts\Data Types\Tuple.cs" />
     <Compile Include="Assets\Scripts\Finger.cs" />
     <Compile Include="Assets\Scripts\Game.cs" />
@@ -70,11 +69,15 @@
     <Compile Include="Assets\Scripts\Keyboard Grid\KeyboardRow.cs" />
     <Compile Include="Assets\Scripts\Leak.cs" />
     <Compile Include="Assets\Scripts\Mouse.cs" />
+    <Compile Include="Assets\Scripts\Pause\Menu.cs" />
+    <Compile Include="Assets\Scripts\Pause\NoButton.cs" />
+    <Compile Include="Assets\Scripts\Pause\YesButton.cs" />
     <Compile Include="Assets\Scripts\Plank.cs" />
     <Compile Include="Assets\Scripts\PulsingUI.cs" />
     <Compile Include="Assets\Scripts\Score.cs" />
     <Compile Include="Assets\Scripts\Start and End Scenes\EndScreen.cs" />
     <Compile Include="Assets\Scripts\Start and End Scenes\Instructions.cs" />
+    <Compile Include="Assets\Scripts\Start and End Scenes\ScoreBoard.cs" />
     <Compile Include="Assets\Scripts\Waves\WaveController.cs" />
     <Compile Include="Assets\Scripts\Waves\Waves.cs" />
     <Reference Include="UnityEditor.StandardEvents">

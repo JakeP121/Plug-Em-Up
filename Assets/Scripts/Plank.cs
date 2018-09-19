@@ -23,6 +23,7 @@ namespace PlugEmUp
         private PulsingUI ring; // The pulsing UI ring
 
         private Mouse mouse; // The mouse used to build this plank
+        private Pause.Menu pauseMenu; 
 
         public AudioClip[] hammerSounds;
         public AudioClip[] placementSound;
@@ -39,6 +40,8 @@ namespace PlugEmUp
             mouse = FindObjectOfType<Mouse>();
             mouse.switchTool(Mouse.Tool.HAMMER);
 
+            pauseMenu = FindObjectOfType<Pause.Menu>();
+
             transform.parent = parent;
             transform.localPosition = new Vector3(0.0f, 0.0f, -21.0f);
             key = transform.parent.GetComponent<Leak>().key;
@@ -52,6 +55,9 @@ namespace PlugEmUp
 
         public void Update()
         {
+            if (pauseMenu.isPaused)
+                return;
+
             switch (currentState)
             {
                 case (State.BUILT): // Skip if built
@@ -87,7 +93,7 @@ namespace PlugEmUp
         /// </summary>
         private void OnMouseDown()
         {
-            if (currentState != State.BUILDING)
+            if (currentState != State.BUILDING || pauseMenu.isPaused)
                 return;
 
             clickCounter++;

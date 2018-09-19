@@ -9,6 +9,8 @@ namespace PlugEmUp
         private KeyboardGrid grid; // Game screen split into keyboard-based grid
         private Waves waves; // Overall water level
 
+        public float gameTimer = 0.0f; // How long the game has been running
+
         public float breakCounter = 0.0f; // How long since damage was last inflicted
         private List<Tuple<float, float, float>> breakFrequency = new List<Tuple<float, float, float>>(); // The length of each stage (seconds), the frequency of leaks (seconds) and probability of a double event (0-1)
         public int stage = 0; // What stage of breakFrequency the game is currently in
@@ -16,14 +18,20 @@ namespace PlugEmUp
 
         public Finger[] fingers; // Array of all fingers
 
+        public AudioClip explosionSound; // A sound to signal a new leak
+        private AudioSource audioSource; // AudioSource to play explosion sound
+
         private bool running = false; // Is the game running
-
-        public float gameTimer = 0.0f;
-
+        private Pause.Menu pauseMenu;
+        
         // Use this for initialization
         void Start()
         {
             grid = GetComponent<KeyboardGrid>();
+            pauseMenu = FindObjectOfType<Pause.Menu>();
+
+            audioSource = GetComponent<AudioSource>();
+            audioSource.clip = explosionSound;
 
             GameObject hand = GameObject.Find("Hand");
 
@@ -54,7 +62,7 @@ namespace PlugEmUp
         // Update is called once per frame
         void Update()
         {
-            if (!running)
+            if (!running || pauseMenu.isPaused)
                 return;
 
             gameTimer += Time.deltaTime;
@@ -101,6 +109,7 @@ namespace PlugEmUp
 
                     GameObject leak = Instantiate(Resources.Load("Leak")) as GameObject;
                     leak.GetComponent<Leak>().init(key);
+                    audioSource.Play();
 
                     key.hasALeak = true;
                 }
@@ -141,7 +150,7 @@ namespace PlugEmUp
             Score.setTimeSurvived(gameTimer);
 
             closeAllLeaks();
-            GetComponent<Mouse>().reset();
+            GetComponent<Mouse>().switchTool(null);
 
             GameObject.Find("End Screen").GetComponent<EndScreen>().rise();
         }

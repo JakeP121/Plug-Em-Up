@@ -9,6 +9,9 @@ public class EndScreen : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+
         if (rising)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y + (riseSpeed * Time.deltaTime), transform.position.z);
@@ -29,5 +32,14 @@ public class EndScreen : MonoBehaviour {
     public void rise()
     {
         rising = true;
+    }
+
+    /// <summary>
+    /// Go back to main menu 
+    /// </summary>
+    private void OnMouseDown()
+    {
+        if (!rising)
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }

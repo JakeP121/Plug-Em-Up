@@ -16,14 +16,18 @@ namespace PlugEmUp
 
         private SpriteRenderer sprite; // The physical sprite
 
+        private Pause.Menu pauseMenu;
+
         private void Start()
         {
             sprite = GetComponent<SpriteRenderer>();
+
+            pauseMenu = FindObjectOfType<Pause.Menu>();
         }
 
         // Update is called once per frame
         void Update() {
-            if (!active)
+            if (!active || pauseMenu.isPaused)
                 return;
 
             if (growing)
