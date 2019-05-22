@@ -12,7 +12,7 @@ namespace PlugEmUp.Utilities
         /// <param name="scene"></param>
         public void setScene(int scene)
         {
-
+            UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
         }
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace PlugEmUp
 
         public GameObject plank; // Plank in use to fix (null if not being repaired)
 
-        private bool particlesOn = false; // Should water particles be shown
+        private new ParticleSystem particleSystem;
 
         private Game game; // Game script, keeps track of fingers
         private Waves waves; // Water to increase over time
@@ -51,6 +51,8 @@ namespace PlugEmUp
 
             keyIcon = transform.Find("Key").gameObject;
             keyIcon.transform.Find("Text").GetComponent<TextMesh>().text = key.keyCode.ToString();
+
+            particleSystem = GetComponentInChildren<ParticleSystem>();
         }
 
         // Update is called once per frame
@@ -58,12 +60,11 @@ namespace PlugEmUp
         {
             if (pauseMenu.isPaused)
             {
-                if (particlesOn)
-                    showParticles(false);
+                particleSystem.Stop();
                 return;
             }
-            else if (!particlesOn)
-                showParticles(true);
+            else if (currentState == State.LEAKING && !particleSystem.isPlaying)
+                particleSystem.Play();
 
             handleInput();
 
@@ -84,8 +85,6 @@ namespace PlugEmUp
                     if (finger == null)
                         moveToPlug();
                 }
-                else
-                    unplug();
             }
         }
 
@@ -148,13 +147,13 @@ namespace PlugEmUp
 
             waterFillCounter = 0.0f;
 
-            showParticles(false);
+            particleSystem.Stop();
         }
 
         /// <summary>
         /// Unplugs the hole (starts increasing water level and shows particle effect)
         /// </summary>
-        private void unplug()
+        public void unplug()
         {
             currentState = State.LEAKING;
 
@@ -162,7 +161,7 @@ namespace PlugEmUp
                 finger.retract();
             finger = null;
 
-            showParticles(true);
+            particleSystem.Play();
 
             showKeyIcon(true);
         }
@@ -172,15 +171,18 @@ namespace PlugEmUp
         /// </summary>
         private void startRepairing()
         {
+            if (currentState == State.PLUGGED)
+                unplug();
+
             Mouse mouse = FindObjectOfType<Mouse>();
 
             currentState = State.BOARDING;
 
-            showParticles(false);
+            particleSystem.Stop();
             showKeyIcon(false);
 
             plank = Instantiate(Resources.Load("Plank")) as GameObject;
-            plank.GetComponent<Plank>().init(this.transform);
+            plank.GetComponent<Plank>().init(transform);
 
             mouse.switchTool(Mouse.Tool.HAMMER);
         }
@@ -192,6 +194,9 @@ namespace PlugEmUp
         {
             key.hasALeak = false;
             Score.repairedLeak();
+
+            plank.transform.SetParent(transform.parent);
+
             Destroy(this.gameObject);
         }
 
@@ -212,22 +217,6 @@ namespace PlugEmUp
                 keyIcon.transform.Find("Text").GetComponent<TextMesh>().text = key.keyCode.ToString();
             else
                 keyIcon.transform.Find("Text").GetComponent<TextMesh>().text = "";
-        }
-
-        /// <summary>
-        /// Shows or hides the particle system
-        /// </summary>
-        /// <param name="show">True to show, false to hide.</param>
-        private void showParticles(bool show)
-        {
-            particlesOn = show;
-
-            ParticleSystem.EmissionModule psEmission = GetComponentInChildren<ParticleSystem>().emission;
-
-            if (particlesOn)
-                psEmission.rateOverTime = 40.0f;
-            else
-                psEmission.rateOverTime = 0.0f;
         }
     }
 }

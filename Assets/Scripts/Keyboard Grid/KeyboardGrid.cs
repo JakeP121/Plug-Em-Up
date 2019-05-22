@@ -10,16 +10,16 @@ namespace PlugEmUp
 
         public KeyboardRow[] rows = new KeyboardRow[3]; // Rows of all possible holes
 
-        private Vector2 playSize; // Size of area to spawn keys on (Not necessarily the screen size)
-
         private bool initialised = false; // Stops the grid from getting drawn before it is initialised
+
+        private float cameraAspect = 0.0f;
 
         // Use this for initialization
         void Start()
         {
-            playSize = new Vector2(transform.localScale.x, transform.localScale.y);
-
             setupGrid();
+
+            cameraAspect = Camera.main.aspect;
 
             initialised = true;
         }
@@ -33,6 +33,18 @@ namespace PlugEmUp
             rows[1] = new KeyboardRow(KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J, KeyCode.K, KeyCode.L);
             rows[2] = new KeyboardRow(KeyCode.Z, KeyCode.X, KeyCode.C, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M);
 
+            alignGrid();
+        }
+
+        /// <summary>
+        /// Aligns the keyboard grid with the camera
+        /// </summary>
+        private void alignGrid()
+        {
+            Vector2 playSize = getPlaySize();
+
+            transform.localScale = new Vector3(playSize.x, playSize.y, 1.0f);
+
             Vector2 rowSize = new Vector2(playSize.x, playSize.y / 3);
             Vector2 boxSize = new Vector2(playSize.x / rows[0].keys.Length, playSize.y / 3);
 
@@ -41,6 +53,19 @@ namespace PlugEmUp
                 float yPos = (1 - i) * (playSize.y / 3);
                 rows[i].setPositions(rowSize, boxSize, yPos);
             }
+        }
+
+        /// <summary>
+        /// Gets the play size of keyboard grid from the camera's size
+        /// </summary>
+        /// <returns>Keyboard grid playsize</returns>
+        private Vector2 getPlaySize()
+        {
+            // https://answers.unity.com/questions/230190/how-to-get-the-width-and-height-of-a-orthographic.html
+            float camHeight = Camera.main.orthographicSize * 2.0f;
+            float camWidth = camHeight * Camera.main.aspect;
+
+            return new Vector2(camWidth, camHeight);
         }
 
         /// <summary>
@@ -58,5 +83,14 @@ namespace PlugEmUp
             }
         }
 
+        private void Update()
+        {
+            // Realine grid if camera aspect ratio has changed
+            if (Camera.main.aspect != cameraAspect)
+            {
+                cameraAspect = Camera.main.aspect;
+                alignGrid();
+            }
+        }
     }
 }

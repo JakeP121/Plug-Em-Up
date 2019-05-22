@@ -42,8 +42,8 @@ namespace PlugEmUp
 
             pauseMenu = FindObjectOfType<Pause.PauseMenu>();
 
-            transform.parent = parent;
-            transform.localPosition = new Vector3(0.0f, 0.0f, -21.0f);
+            transform.SetParent(parent);
+            transform.localPosition = new Vector3(0.0f, 0.0f, parent.transform.position.z - 0.1f);
             key = transform.parent.GetComponent<Leak>().key;
 
             ring = transform.Find("Ring").gameObject.GetComponent<PulsingUI>();
@@ -73,7 +73,8 @@ namespace PlugEmUp
                     {
                         startFalling();
                         mouse.switchTool(Mouse.Tool.PLANK);
-                        transform.parent.GetComponent<Leak>().currentState = Leak.State.LEAKING;
+                        transform.parent.GetComponent<Leak>().unplug();
+                        Destroy(ring.gameObject);
                     }
                     break;
 
@@ -118,9 +119,6 @@ namespace PlugEmUp
         public void startFalling()
         {
             currentState = State.FALLING;
-
-            if (transform.parent != null)
-                transform.parent.GetComponent<Leak>().plank = null;
         }
 
         /// <summary>

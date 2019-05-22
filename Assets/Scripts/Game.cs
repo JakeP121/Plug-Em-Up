@@ -13,7 +13,7 @@ namespace PlugEmUp
 
         private float breakCounter = 0.0f; // How long since damage was last inflicted
         private List<Tuple<float, float, float>> breakFrequency = new List<Tuple<float, float, float>>(); // The length of each stage (seconds), the frequency of leaks (seconds) and probability of a double event (0-1)
-        public int stage = 0; // What stage of breakFrequency the game is currently in
+        private int stage = 0; // What stage of breakFrequency the game is currently in
         private float stageTimer = 0.0f; // How long the current stage has been active
 
         public Finger[] fingers; // Array of all fingers
@@ -111,6 +111,7 @@ namespace PlugEmUp
                     found = true;
 
                     GameObject leak = Instantiate(Resources.Load("Leak")) as GameObject;
+                    leak.transform.SetParent(this.transform);
                     leak.GetComponent<Leak>().init(key);
                     audioSource.Play();
 

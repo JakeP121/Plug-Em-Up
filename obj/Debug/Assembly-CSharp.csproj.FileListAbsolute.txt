@@ -334,3 +334,6 @@ D:\Documents\Unity Projects\Plug-Em-Up\obj\Debug\Assembly-CSharp.csproj.CopyComp
 E:\Documents\Unity Projects\Plug Em Up\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
 E:\Documents\Unity Projects\Plug Em Up\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
 E:\Documents\Unity Projects\Plug Em Up\obj\Debug\Assembly-CSharp.csproj.CopyComplete
+E:\Documents\Unity Projects\Plug Em Up\Temp\bin\Debug\UnityEngine.SpatialTrackingModule.dll
+E:\Documents\Unity Projects\Plug Em Up\Temp\bin\Debug\UnityEngine.WebGLModule.dll
+E:\Documents\Unity Projects\Plug Em Up\Temp\bin\Debug\UnityEngine.SpatialTrackingModule.xml
