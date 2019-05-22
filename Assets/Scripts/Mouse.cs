@@ -7,19 +7,23 @@ namespace PlugEmUp
     public class Mouse : MonoBehaviour
     {
         // Cursor textures
-        public Texture2D hammer;
-        public Texture2D plank; 
+        public List<Texture2D> hammer;
+        public List<Texture2D> plank;
 
         public enum Tool { PLANK, HAMMER };
         public Tool ? currentTool { get; private set; }
 
-        private Pause.Menu pauseMenu;
+        private Pause.PauseMenu pauseMenu;
         private Tool ? pausedOnTool = null; // The tool that was equipped before the game was paused
+
+        private Resolution res;
 
         // Use this for initialization
         void Start()
         {
-            pauseMenu = FindObjectOfType<Pause.Menu>();
+            pauseMenu = FindObjectOfType<Pause.PauseMenu>();
+
+            res = Screen.currentResolution;
 
             switchTool(Tool.PLANK);
         }
@@ -38,6 +42,9 @@ namespace PlugEmUp
             }
             else if (currentTool == null)
                 switchTool(pausedOnTool);
+
+            if (res.width != Screen.currentResolution.width || res.height != Screen.currentResolution.height)
+                switchTool(currentTool);
         }
 
         /// <summary>
@@ -51,16 +58,41 @@ namespace PlugEmUp
             switch (tool)
             {
                 case (Tool.HAMMER):
-                    Cursor.SetCursor(hammer, new Vector2(51.5f, 51.5f), CursorMode.ForceSoftware);
+                    setCursor(hammer);
                     break;
                 case (Tool.PLANK):
-                    Cursor.SetCursor(plank, new Vector2(102.5f, 51.5f), CursorMode.ForceSoftware);
+                    setCursor(plank);
                     break;
                 case (null):
                     Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                     break;
 
             }
+        }
+
+        /// <summary>
+        /// Sets the cursor to a texture
+        /// </summary>
+        /// <param name="textures">List of scaled textures</param>
+        private void setCursor(List<Texture2D> textures)
+        {
+            int screenPixels = Screen.width * Screen.height;
+
+            int regularPixels = 2073600; // 1080p
+
+            Texture2D texture;
+
+            // Determine texture size
+            if (screenPixels <= regularPixels * 0.625f)
+                texture = textures[0];
+            else if (screenPixels <= regularPixels * 0.875f)
+                texture = textures[1];
+            else if (screenPixels <= regularPixels * 1.5f)
+                texture = textures[2];
+            else
+                texture = textures[3];
+
+            Cursor.SetCursor(texture, new Vector2(texture.width / 2, texture.height / 2), CursorMode.ForceSoftware);
         }
     }
 }

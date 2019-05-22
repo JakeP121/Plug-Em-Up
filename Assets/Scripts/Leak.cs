@@ -26,7 +26,7 @@ namespace PlugEmUp
         private float waterFillSpeed = 5.0f; // How many units should the water increase by every second
         private float waterFillCounter = 0.0f; // Counter to keep track of how long since water was increased by this leak
 
-        private Pause.Menu pauseMenu;
+        private Pause.PauseMenu pauseMenu;
 
         /// <summary>
         /// Initialises the leak
@@ -41,7 +41,7 @@ namespace PlugEmUp
             transform.position = key.position;
 
             game = FindObjectOfType<Game>();
-            pauseMenu = FindObjectOfType<Pause.Menu>();
+            pauseMenu = FindObjectOfType<Pause.PauseMenu>();
 
             Score.newLeak();
             waves = FindObjectOfType<Waves>();

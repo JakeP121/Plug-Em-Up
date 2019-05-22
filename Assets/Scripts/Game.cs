@@ -9,9 +9,9 @@ namespace PlugEmUp
         private KeyboardGrid grid; // Game screen split into keyboard-based grid
         private Waves waves; // Overall water level
 
-        public float gameTimer = 0.0f; // How long the game has been running
+        private float gameTimer = 0.0f; // How long the game has been running
 
-        public float breakCounter = 0.0f; // How long since damage was last inflicted
+        private float breakCounter = 0.0f; // How long since damage was last inflicted
         private List<Tuple<float, float, float>> breakFrequency = new List<Tuple<float, float, float>>(); // The length of each stage (seconds), the frequency of leaks (seconds) and probability of a double event (0-1)
         public int stage = 0; // What stage of breakFrequency the game is currently in
         private float stageTimer = 0.0f; // How long the current stage has been active
@@ -22,13 +22,13 @@ namespace PlugEmUp
         private AudioSource audioSource; // AudioSource to play explosion sound
 
         private bool running = false; // Is the game running
-        private Pause.Menu pauseMenu;
+        private Pause.PauseMenu pauseMenu;
         
         // Use this for initialization
         void Start()
         {
             grid = GetComponent<KeyboardGrid>();
-            pauseMenu = FindObjectOfType<Pause.Menu>();
+            pauseMenu = FindObjectOfType<Pause.PauseMenu>();
 
             audioSource = GetComponent<AudioSource>();
             audioSource.clip = explosionSound;
@@ -44,6 +44,9 @@ namespace PlugEmUp
             running = true;
         }
 
+        /// <summary>
+        /// Initialises the stages
+        /// </summary>
         private void initBreakFrequencies()
         {
             breakFrequency.Add(new Tuple<float, float, float>(15.0f, 4.0f, 0.0f));

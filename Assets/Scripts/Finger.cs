@@ -12,11 +12,11 @@ namespace PlugEmUp
 
         private GameObject target; // Target plugged or going to be plugged (null if not inUse)
 
-        private Pause.Menu pauseMenu;
+        private Pause.PauseMenu pauseMenu;
 
         private void Start()
         {
-            pauseMenu = FindObjectOfType<Pause.Menu>();
+            pauseMenu = FindObjectOfType<Pause.PauseMenu>();
         }
 
         // Update is called once per frame
